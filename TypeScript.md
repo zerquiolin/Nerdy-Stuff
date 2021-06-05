@@ -4,7 +4,7 @@
 
 <br> <br>
 
-### **~ How To Install**
+### **How To Install**
 
 <br> <br>
 
