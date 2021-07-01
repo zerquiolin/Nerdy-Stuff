@@ -1207,10 +1207,331 @@ http
 
 <br> <br>
 
-```
+Now lets make our lives easier!
+
+Express is a minimal and flexible Node Js webapp framework, design to make developing websites (webapp) and apis much faster and easier.
+
+Besides Express is not a built-in module in Node Js, its pretty much an standart when creating web applications with Node Js!
+
+<br>
+
+**How to install?**
+
+Running on the terminal:
 
 ```
-
+npm install express --save
 ```
 
+    ~ The '--save' is because in the earlier Node versions once you installed Express it might not be saved on the 'Package.json', so the '--save' assures it's saved, nowadays this problem is gone, but just for precaution it's still used.
+
+<br>
+
+### **Express Basics**
+
+Once we installed Express we can add its module:
+
+```javascript
+const express = require("express");
 ```
+
+Now we can create our app:
+(This is pretty much similar to the 'createServer' method from the http module, but here we dont need to pass in any parameters)
+
+```javascript
+const app = express();
+```
+
+Here is something cool! <br> Since we are importing a function via the 'express' import, we can chain the parentheses calling its function automatically
+
+```javascript
+const express = require("express")();
+```
+
+This way we import the module and create the app in one single line!
+
+<br>
+
+We have some pretty important methods:
+
+1. Get - read data.
+2. Post - insert data.
+3. Put - update data.
+4. Delete - delete data.
+5. All - handle all http verbs
+6. Use - sets the middleware
+7. Listen - Sets the port.<br>
+
+(we will cover them deeper on the course)<br>
+
+Quick basic example:
+
+```javascript
+// import mddules
+
+// Create an instance as well as evoking the function
+const express = require("express")();
+
+// Resolve requests
+
+// on the 'get' method, the first parameter is the path and the second parameter is the callack with the reques and response parameters
+express.get("/", (req, res) => {
+  res.send("Home Page");
+});
+// the '.send' method will act as the '.write' method of the http module
+
+// on the 'all' method, the first parameter is the path and the second parameter is the callack with the reques and response parameters
+// if the request couldnt find the resource, by using this 'all' method we will handle the exception adn throw our own 404 error
+express.all("*", (req, res) => {
+  res.send("<h1>Path not found! :</h1>");
+});
+// keep in mind we set all the paths by using '*'
+
+// on the 'listen' method, the first parameter is the port our app will be listening to and the second parameter is the callback with the processes we need to execute once the server is up
+express.listen(5000, () => {
+  console.log("The server is listening on port :5000");
+});
+```
+
+Notice we didnt set any status code, hwo can we handle our errors, alerts, success and more?
+
+~ We can chain the methods of the res variable.<br>
+~ We will be using the 'status' method!
+
+```javascript
+res.status(200).send("We did it!");
+```
+
+This way we set a 200 status code for that response!
+
+<br>
+
+---
+
+<br>
+
+### **App Example:**
+
+<br>
+
+```javascript
+// Import modules
+
+// Since we are going to be using methods from the import as well as methods from the invoked instance
+const express = require("express");
+const app = express();
+
+// We will import the path module as we need to send the absolute path for sending the file
+const path = require("path");
+
+// set the root file
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./index.html"));
+});
+// we used the join method so set the absolute path but we can also use the .resolve() method
+// we used the global variable '__dirname' to obtain the actual path
+
+// Remember we had to set a path for each file we needed, no matter if it was css, javascript and more?
+// with express we can set a folder with all the files and call them by using middleware
+app.use(express.static("./assets"));
+// .use() just set up the middleware
+// .static() sets the static assets, we only pass the path of the folder
+// This configuration automaticly handles all the status codes
+
+// Here we will hanlde the unfound path and send the 404 error
+app.all("*", (req, res) => {
+  res.status(404).send("<h1>The path was not found!</h1>");
+});
+
+// setting the port...
+app.listen(5000, () => {
+  console.log("the server is listening on port :5000");
+});
+
+// static assets that dont change
+
+// another way to execute our web app is setting the index.html to the assets folder where the .use() method is taking place, this will take the starting file index.html file and everything will work fine
+```
+
+~ **middleware** enables communication and data management for distributed applications.
+
+<br>
+
+---
+
+<br>
+
+### **API Vs SSR (Server Side Rendering)**
+
+<br>
+
+when it comes to express, in most cases you will use one of the following options:
+
+<br>
+
+| API        | SSR            |
+| ---------- | -------------- |
+| API - JSON | SSR - TEMPLATE |
+| Send Data  | Send Template  |
+| RES.JSON() | RES.RENDER()   |
+
+<br>
+
+Api is one of the most used terms used in the community, in express or http cases, when we talk about api we mean setting up an http interface to interact with our data, the data is send by using json (Javascript Object Notation), in order to send back our response we use, res.json(), this will handle the hard work like setting the right content-type and stringify our data.
+
+server side rendering sets up templates and send back entire html, css and javascript files by using res.render()
+
+when it comes to more complex express examples, we need to have no doubt which technology to use, whether its api or ssr, this lets us focus more on the problem itself and not overcomplicate ourselves
+
+we will start using apis beacuse it'll help us to focus more on the actual express over templates, for begginers its a great choise!
+
+<br>
+
+**_Fetching JSON data_**
+
+Once we make an http request, we can send data via .json() method, which will actually return the object to the user!
+
+After creating our app and setting our path, we can send our json file:
+
+```javascript
+res.json([{ name: "zerquiolin", code: 911 }]);
+```
+
+And access by the url we previusly set up.
+
+lets make a real example:
+
+<br>
+
+Data.js:
+
+```javascript
+const products = [
+  {
+    code: 1,
+    name: "milk",
+    price: 9.99,
+  },
+  {
+    code: 2,
+    name: "cookies",
+    price: 5.99,
+  },
+];
+
+module.exports = { products };
+```
+
+App.js
+
+```javascript
+// import modules
+
+const express = require("express")();
+const { products } = require("./Data.js");
+
+express.get("/", (req, res) => {
+  res.json(products);
+});
+
+// imagine you only need the first two parameters of the json, we can destructure the data
+express.get("/", (req, res) => {
+  const newProducts = products.map((element) => {
+    let { code, name } = element;
+    return { code, name };
+  });
+  res.json(newProducts);
+});
+
+express.listen(5000);
+```
+
+<br>
+
+**_Route Params_**
+
+Imagine we are building an ecomerce, we must have a single page for each product, now imagine we have over 1000 products and for each product we need to create a path and handle its logic...Thats a lot!
+
+Thankfuly route params exists, which are variables inside the url, but how do they work?
+
+Once we set our path we use a colon and set the variable name, for example:
+
+```
+/store/:productId
+```
+
+~ our variable in this case will be 'productId', but where is stored?
+
+By console logging the req parameter and looking up for another object called 'params', we will encounter where our path variables are being stored!
+
+~ Now we know where are our path variables being stored, but how can we access them?
+
+```javascript
+// inside the get method from express we can get access to the req parameter
+
+// we can obtain the value by accessing the variable:
+req.params.productId;
+// or we can access the variable by destructuring the object:
+const { productId } = req.params;
+```
+
+<br>
+
+---
+
+**¡¡WE MUST TAKE INTO ACCOUNT EVERY VALUE STORED ON THE 'PARAMS' OBJECT WILL BE STORED AS A STRING!!**
+
+---
+
+<br>
+
+Lets meake a quick example where we console log the value the user inserts on the url:
+
+```javascript
+// import modules
+const express = require("express")();
+
+express.get("/:userValue", (req, res) => {
+  res.send(req.params.userValue);
+});
+
+express.listen(5000);
+```
+
+This means if we set the url as **http://localhost:5000/test** the value that will be shown on the screen will be **test**!
+
+<br>
+
+And yeah! We can create more variables on a single path, lets make an example:
+
+```javascript
+// import modules
+const express = require("express")();
+
+express.get("/home/:userValue/store/:productId", (req, res) => {
+  const { userValue, productId } = req.params;
+  res
+    .status(200)
+    .send(`~ userValue: ${userValue} <br> ~ productId: ${productId}`);
+});
+
+express.listen(5000);
+```
+
+Here we have two path variables:
+
+- userValue
+- productId
+
+This means using this input:
+
+    http://localhost:5000/home/zerquiolin/store/911
+
+We will get this output:
+
+    ~ userValue: zerquiolin
+    ~ productId: 911
+
+<br>
+
+### **Query Strings**
