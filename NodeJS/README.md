@@ -1534,4 +1534,9 @@ We will get this output:
 
 <br>
 
-### **Query Strings**
+### **Query Strings or Url Strings**
+
+They are often used to send a small amount of information to the server using the url, this information is usually used as parameterS to query databases or filter results!
+
+This works very similar to _Route Params_, we send variables via url and an object called query catches them
+Whatever is after the question mark is no considered part of the url, is just the parameters we are sending!
