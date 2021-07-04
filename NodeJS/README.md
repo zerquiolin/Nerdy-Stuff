@@ -1448,7 +1448,7 @@ express.listen(5000);
 
 <br>
 
-**_Route Params_**
+### **_Route Params_**
 
 Imagine we are building an ecomerce, we must have a single page for each product, now imagine we have over 1000 products and for each product we need to create a path and handle its logic...Thats a lot!
 
@@ -1462,7 +1462,7 @@ Once we set our path we use a colon and set the variable name, for example:
 
 ~ our variable in this case will be 'productId', but where is stored?
 
-By console logging the req parameter and looking up for another object called 'params', we will encounter where our path variables are being stored!
+By console logging the req parameter and looking up for an object called 'params', we will encounter where our route variables are being stored!
 
 ~ Now we know where are our path variables being stored, but how can we access them?
 
@@ -1536,7 +1536,601 @@ We will get this output:
 
 ### **Query Strings or Url Strings**
 
-They are often used to send a small amount of information to the server using the url, this information is usually used as parameterS to query databases or filter results!
+They are often used to send a small amount of information to the server using the url, this information is usually used as parameters for query databases or filter results!
 
-This works very similar to _Route Params_, we send variables via url and an object called query catches them
+This works very similar to _Route Params_, we send variables via url and an object called 'query' catches them.
+
 Whatever is after the question mark is no considered part of the url, is just the parameters we are sending!
+
+_How does it work?_
+
+Its syntax is setting a question mark '?' after the folder we are currently on, and then set the variables we want to send and they will be stored into an object called the same as the folder we are sendng our variables, this means if we set an url like this:
+
+```javascript
+"/home/store/api";
+```
+
+All the variables the user or the server sends will be stored on a variable called 'api'!
+
+Now, how can we send some varibles?
+
+```javascript
+// after the question mark '?' we send our variables by sending the variable name and its value
+// we can send various variables by separing them with a the symbol '&'
+
+"/home/store/api?limit=2&lenght=3";
+```
+
+Here we have two variables:
+
+1. limit with a value of 2.
+2. lenght with a value of 3.
+
+<br>
+
+**WE HAVE TO KEEP IN MIND EACH OF THE VALUES WE SEND, ARE SENT ND STORED AS STRINGS!**
+
+<br>
+
+And just as the route params we can access the variables by calling an destructuring the object:
+
+```javascript
+// Remember the url we are requesting is:
+// /home/store/api?limit=2&lenght=3
+express.get("/home/store/api", (req, res) => {
+  const { limit, lenght } = req.api;
+  res.send(`Limit: ${limit} <br> Lenght: ${lenght}`);
+});
+```
+
+<br><br>
+
+---
+
+<br>
+
+### **_IMPORTANT_**
+
+<br>
+
+We cant send more than 1 response for a request, otherwise we are going to get an error and express will be confused at sending the responses!
+
+<br>
+
+---
+
+<br> <br>
+
+### **Middleware Setup**
+
+<br>
+
+_Express middleware are functions that executes during the request of the server, each of the middleware functions has access to the request and response objects, and its functionality is limitless!_
+
+Middleware is everywhere in express js!
+
+This is one of the most important topics of express js!
+
+How is the order of execution?
+
+~ request => middleware => response
+
+What middleware does is stays in between, the request comes in, then we do some kind of functionality and then send the response!
+
+Now, we might have to use the same functionality on different request, but how can we do that?
+
+```javascript
+const express = require("express");
+const app = express();
+
+const logger = (req, res, next) => {
+  // Some pretty dang logic in here!
+
+  next();
+};
+// We always MUST continue with the next middleware by invoking the next function or just send a response
+// if we dont send a response or continue to the next middleware the web app will enter a loop cicle and won't load up
+
+// inside the get function we have another parameter, u guest it! the middleware, so now we have the path, the middleware and finaly the callback!
+app.get("/", logger, (req, res) => {
+  res.send("We did it!");
+});
+// dont worry about sending the parameters to our middleware function, express will automatically handle it!
+
+app.listen(5000);
+```
+
+One additional functionality is when your trying to set more than 1 middleware for a single path, instead of passing the one by one you just can send an array of middleware functions and that will do the job!
+
+```javascript
+app.get("/", [middlewareFunction0, middlewareFunction1], (req, res) => {
+  // code
+});
+```
+
+<br>
+
+### **App.use()**
+
+Once we start to have more and more routes it will become harder to manually set the middleware to each of them, the solution is setting the middleware function on sepparate file and import it via modules, onces we want to apply the middleware function we just imported, we set:
+
+```javascript
+// logger.js contains our middleware function
+const logger = require("./logger.js");
+
+// express
+const express = require("express");
+const app = express();
+
+// setting the middlware function to each of the routs we create
+app.use(logger);
+```
+
+now you should be wondering how are we applying our logger function to each of the routs we create, the answer is simple, as JavaScript is a single-threaded lenguage everything thats below our app.use() will automaticly inherit our middleware!
+
+Keep in mind if we have:
+
+```javascript
+app.get("/", (req, res) => {
+  // CODE
+});
+
+app.use(logger);
+
+app.get("/home", (req, res) => {
+  // CODE
+});
+```
+
+The only path that will inherit our middleware will be the '/home' path as the '/' path was already read!
+
+<br>
+
+we also could asign paths to our app.use()!
+
+for example:
+
+```javascript
+app.use("/home", logger);
+```
+
+As we asign '/home' as our entry path for the logger, we are taking that each path we create that extends the home folder will also have the middleware.
+
+    path examples:
+
+    '/home/store'
+    '/home/api'
+    '/home/aboutus/contactus/'
+
+    each of these routs will have the middleware
+
+<br>
+
+### **Multiple Middleware Functions**
+
+Once you have different middleware functions (hopefuly on a different file), we can set multiple functions to the app.use() method:
+
+```javascript
+// both logger.js and active.js are middleware functions
+const logger = require("./logger.js");
+const active = require("./active.js");
+
+// express
+const express = require("express");
+const app = express();
+
+// setting the middlware function to each of the routs we create
+app.use([logger, active]);
+// here you have to keep in mind the app.use() works in order, so it'll execute one function after the other based on the order we passed in
+```
+
+we also have to keep in mind there are tree ways of getting middleware functions:
+
+1. selfmade
+2. express made
+3. third party made
+   - One good example is [Morgan NPM](https://www.npmjs.com/package/morgan)
+
+<br>
+
+A pretty import thing is asignning new variables to the request object on the middleware function just to be used later on the response!
+
+For example:
+
+```javascript
+// import modules
+const express = require("express");
+const app = express();
+
+// middleware functions
+const data = (req, res, next) => {
+  req.newData = {req.method, req.url, new Date().getFullYear()};
+  next();
+};
+
+// web app
+app.get("/", data, (req, res) => {
+  app.send(req.newData);
+});
+// Notice we now can access the object inside the request we previuosly created on the middleware function!
+
+app.listen(5000);
+```
+
+<br>
+
+### **Http Methods Examples And Uses**
+
+<br>
+
+#### **Get Method**
+
+The Get method is the default method for requesting information, is used for reading the data.
+
+Quick example:
+
+We have an object called 'data' inside the Data.js file:
+
+```javascript
+const data = [
+  {
+    id: 1,
+    name: "mobile",
+  },
+  {
+    id: 2,
+    name: "laptop",
+  },
+  {
+    id: 3,
+    name: "pc",
+  },
+];
+
+module.exports = data;
+```
+
+Now, in our app.js file:
+
+```javascript
+// import modules
+const express = require("express");
+const app = express();
+const data = require("./Data.js");
+// web app
+
+app.get("/api/data", (req, res) => {
+  res.status(200).json(data);
+});
+
+app.listen(5000);
+```
+
+With this example we now can visualice and fetch our data
+
+<br>
+
+#### **Post Method**
+
+The Post method is used to send information!
+
+We have to understand we must send crusial information when using and html form, once we set our inputs or the tag that will send our information, we have to gave them at least a name, because with this information we are going to identify them and get their values a lot easier, this is just adding the 'body', something its not a must on the get method:
+
+How can we use post?
+~ it actually works pretty similar to get, lets make a quick example:
+
+```javascript
+// import modules
+const express = require("express");
+const app = express();
+// web app
+
+app.get("/api/data", (req, res) => {
+  res.status(200).json(data);
+});
+
+app.post("/api/data", (req, res) => {
+  // CODE
+});
+
+// Notice we have the same url but different http methods, is this correct?
+// Just because we have the same path doesnt mean we are executing the same functionality, this could be used for fetching and sending data on the same url
+
+app.listen(5000);
+```
+
+We only have set the common structure for the post method, but how can we retrieve the data now?
+
+Once we send our post with the html form the data will be sent but not stored yet, for us to access and store the data we have to parse the information and with a method of the express module we can add the data to the request parameter as the body object.
+
+```javascript
+// parse the data
+app.use(express.urlencoded({extended: false}));
+// urlencoded is just an express middleware function that allow us to parse the informacion and add the data to the request parameter
+// the extended property just allow us to parse the data with queryStringLibrary
+
+// now as we just encode the data we can access the data with no problem
+app.post("/api/data", (req, res) => {
+  res.status(200).json(req.body);
+/});
+// we now can visualize the data that has been sent on the html form!
+```
+
+And there is another way to send information, there is a library called AXIOS which will allow you to handle better the errors and also be mor capable to send and retrieve information due to its ease
+
+but there is an important thing to keep in mind as we use axios, because it sends the informacion as json objects, so we have to handle them to access the information with any problems.
+
+Its actually easy, we just need to set a middleware function by using the .use() method and accessing an express method called .json() which will parse the data so we can use it!
+
+```javascript
+app.use(express.json());
+```
+
+<br> <br>
+
+---
+
+<br>
+
+### **IMPORTANT**
+
+Once we are more into testing our web app, we can download **Postman**, this application will help us handling http methods easier, with an intuitive UI that which will help us debbug our request and response handling!
+
+[**Postman**](https://www.postman.com/)
+<br>
+
+---
+
+<br><br>
+
+### **Put Method & Delete Method**
+
+As you can notice, each of the http are pretty similar, their structure and how they work is pretty similar!
+In this casem the put and delete method work just as fine as the get method, nevertheless, they are so important to identify whats being done in the code!
+
+<br>
+
+### **Express Router**
+
+Once we start to grow our application, we will encounter we are constantly repeating url paths, something like this:
+
+```javascript
+"/api/data";
+"/api/data";
+"/api/data/filter";
+"/api/data/:id";
+"/api/data/:Id";
+```
+
+Notice we have the same '/ape/data' path, so we are repeatng ourselves and making the code harder to read!
+
+But there is a solution for that _Express Route_, this will allow you to sepparate the request that have the same path on a separate file, lets make a quick example:
+
+Imagine we have this app.js file:
+
+```javascript
+// import modules
+const express = require("express");
+const app = express();
+
+// web app
+app.get("/api/data", (req, res) => {
+  /* CODE */
+});
+app.post("/api/data", (req, res) => {
+  /* CODE */
+});
+app.get("/api/data/filter", (req, res) => {
+  /* CODE */
+});
+app.put("/api/data/:id", (req, res) => {
+  /* CODE */
+});
+app.delete("/api/data/:id", (req, res) => {
+  /* CODE */
+});
+
+app.listen(5000);
+```
+
+We basicaly have a starting path '/api/data' thats repeated on each path, we could do something pretty cool, by using express router we can set all this methods on a sepparate file:
+
+lets call this new file **Data.js**:
+
+```javascript
+// import modules
+const express = require("express");
+const router = express.Router();
+
+// notice all our app. where changed to router.
+router.get("/api/data", (req, res) => {
+  /* CODE */
+});
+router.post("/api/data", (req, res) => {
+  /* CODE */
+});
+router.get("/api/data/filter", (req, res) => {
+  /* CODE */
+});
+router.put("/api/data/:id", (req, res) => {
+  /* CODE */
+});
+router.delete("/api/data/:id", (req, res) => {
+  /* CODE */
+});
+
+// finally we export our router
+module.exports = router;
+```
+
+Now, as we have all our methods on a sepparate file we can refactor our **App.js** file:
+
+```javascript
+// import modules
+const express = require("express");
+const app = express();
+
+// import our express route we just created
+const data = require("./Data");
+
+// for the app to work we need to implement the .use() method and set the base folder as well as the router we just created
+app.use("/api/data", data);
+// we now succesfuly refactor our code and made it more readable, and accesible!
+
+app.listen(5000);
+```
+
+Did you notice something?
+As we already set our base folder on the .use() method for our router, our paths on the **Data.js** have to change, because our base is no longer '/' its '/api/data'
+
+**Data.js**:
+
+```javascript
+// import modules
+const express = require("express");
+const router = express.Router();
+
+// As our base folder is now '/api/data' we could asign the paths of our methods to folders within that base.
+
+// notice all our app. where changed to router.
+router.get("/", (req, res) => {
+  /* CODE */
+});
+router.post("/", (req, res) => {
+  /* CODE */
+});
+router.get("/filter", (req, res) => {
+  /* CODE */
+});
+router.put("/:id", (req, res) => {
+  /* CODE */
+});
+router.delete("/:id", (req, res) => {
+  /* CODE */
+});
+
+// finally we export our router
+module.exports = router;
+```
+
+Another thing we could to do to increse the readability of the code is set the callback functions on a different file:
+
+**Callbacks.js**
+
+```javascript
+const getData = (req, res) => {
+  /* CODE */
+});
+
+const postData = (req, res) => {
+  /* CODE */
+});
+
+const getFilteredData = (req, res) => {
+  /* CODE */
+});
+
+const putData = (req, res) => {
+  /* CODE */
+});
+
+const deleteData = (req, res) => {
+  /* CODE */
+});
+
+module.exports = {getData, postData, getFilteredData, putData, deleteData}
+```
+
+Now lets import and refactor our **Data.js**:
+
+```javascript
+// import modules
+const express = require("express");
+const router = express.Router();
+
+// import callback functions
+const {
+  getData,
+  postData,
+  getFilteredData,
+  putData,
+  deleteData,
+} = require("Callbacks.js");
+
+// As our base folder is now '/api/data' we could asign the paths of our methods to folders within that base.
+
+// notice all our app. where changed to router.
+router.get("/", getData);
+router.post("/", postData);
+router.get("/filter", getFilteredData);
+router.put("/:id", putData);
+router.delete("/:id", deleteData);
+
+// Now we have a much cleaner code!!!
+
+// finally we export our router
+module.exports = router;
+```
+
+<br>
+
+#### **Express Route**
+
+As we saw on the Express Router example we could extract a base folder and work with different files, increasing the readability as well as the structure of the proyect, but we can improve our app even more!
+
+Lets continue the Express Router example with the same files, so lets head into **Data.js**:
+
+```javascript
+// import modules
+const express = require("express");
+const router = express.Router();
+
+// import callback functions
+const {
+  getData,
+  postData,
+  getFilteredData,
+  putData,
+  deleteData,
+} = require("Callbacks.js");
+
+router.get("/", getData);
+router.post("/", postData);
+router.get("/filter", getFilteredData);
+router.put("/:id", putData);
+router.delete("/:id", deleteData);
+
+module.exports = router;
+```
+
+Notice even thought we made a base folder and reduce our paths we still have some repeated ones, we can use the route method of router to simplify even more everything!
+
+```javascript
+// import modules
+const express = require("express");
+const router = express.Router();
+
+// import callback functions
+const {
+  getData,
+  postData,
+  getFilteredData,
+  putData,
+  deleteData,
+} = require("Callbacks.js");
+
+// Once we set up our route we can chain our htto method passing the callback only!
+router.route("/").get(getData).post(postData);
+router.route("/filter").get(getFilteredData);
+router.route("/:id").get(putData).post(deleteData);
+
+// We finish our refactor and set a better strucutre and a much more readable code!
+
+module.exports = router;
+```
+
+<br>
+
+# **_CONGRATULATIONS!_**
+
+### We just got to the end of our course, we did great, hope seeing you around soon!
