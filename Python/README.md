@@ -728,9 +728,55 @@ with open('newFile.txt', mode = 'w') as myFile:
 
 ### **Basic Operators**
 
+| Operator | Description                                                                                                                   |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| ==       | If the values of two operands are equal, then the condition becomes true.                                                     |
+| !=       | If the values of two operands are not equal, then the condition becomes tre                                                   |
+| >        | If the value of left operand is greater than the value of the right operand, then the condition becomes true                  |
+| <        | If the value of left operand is less than the value of the right operand, then the condition becomes true                     |
+| >=       | If the value of left operand is less greater than or equal to the value of the right operand, then the condition becomes true |
+| <=       | If the value of left operand is less less than or equal to the value of the right operand, then the condition becomes true    |
+
 <br>
 
 ### **Chained Comparison Operators**
+
+We can use logical operators to combine comparisons:
+
+- and
+- or
+- not
+
+```python
+""" AND """
+
+print( (1 == 1) and (2 == 3) ) # False
+print( ('one' == 'one') and (True) ) # True
+
+""" OR """
+
+print( (1 == 1) or (2 == 3) ) # True
+print( ('one' == 'one') or (True) ) # True
+
+""" NOT """
+
+print(not True) # False
+print(not(1 == 1)) # False
+```
+
+Keep in mind:
+
+```python
+# Once we set an operation like this:
+
+2 <= 3 >= 1
+
+# The first operator '2' has to fulfill the condition with the second operator '3' and the third operator '1' as well!
+
+# Reestructuring the condition it would look like this:
+
+( 2 <= 3 ) and ( 2 >= 1 )
+```
 
 <br>
 
