@@ -301,27 +301,422 @@ greetings[11] = '.'
 
 <br>
 
+#### **String Interpolation**
+
+This is a cool feature for injecting variable our strings!
+
+so instead of:
+
+```python
+user = "zerquiolin"
+
+print("Hello " + user) # Hello zerquiolin
+```
+
+We have two methods for this:
+
+1. .format() method. <br>
+
+2. f-strings (Formatted string literals)
+
+<br>
+
+**_.format()_**
+
+the format method allows to inject variables into strings, by defining where the variable will go using {} inside the string we want to inject and then its value inside the parenthesis of the method.
+
+Example:
+
+```python
+greetings =  "Hello {}".format('zerquiolin')
+
+print(greetings) # Hello zerquiolin
+```
+
+We have to keep in mind this takes the value by the index position, so if we have three variables inside our string they will be set in order as we pass them on the method:
+
+```python
+greetings =  "Hello {}, how is your {} going?".format('zerquiolin', 'day')
+
+print(greetings) # Hello zerquiolin, how is your day going?
+
+""" Now let's change the order """
+greetings =  "Hello {}, how is your {} going?".format('day', 'zerquiolin')
+
+print(greetings) # Hello day, how is your zerquiolin going?
+```
+
+See the difference?
+
+Now, we can actually set the order we want no matter the order we passed to the method:
+
+```python
+""" Index """
+
+greetings =  "Hello {1}, how is your {0} going?".format('day', 'zerquiolin')
+
+print(greetings) # Hello zerquiolin, how is your day going?
+
+""" Repeated values """
+
+greetings =  "Hello {0}, how is your {0} going?".format('day', 'zerquiolin')
+
+print(greetings) # Hello day, how is your day going?
+
+""" Variables """
+
+# We actually can assign variables to our data:
+greetings =  "Hello {user}, how is your {day} going?".format(day = 'day', user = 'zerquiolin')
+
+print(greetings) # Hello zerquiolin, how is your day going?
+
+""" Float formatin """
+
+# This allow us to adjust the lenght and precition of our flotaing point number!
+value =  "Value: {f:1.2f}".format(f = 106.123456789)
+print(value) # 106.12
+# This just allow us to show the lenght we want for our flaoting point variable.
+value =  "Value: {f:1.6f}".format(f = 106.123456789)
+print(value) # 106.123457
+
+""" F-strings """
+
+# This works pretty similar to the .format() method, the difference is by only setting and f before our string we can call every varible we want without a problem
+user = 'zerquiolin'
+question = 'How are you?'
+
+greetings = f"Hello {user}! {question}"
+
+print(greetings) # Hello zerquiolin! How are you?
+```
+
+<br>
+
 ### **Lists**
+
+Lists are ordered sequences that can hold a variety of object types, they use square brackets [] and commas to separate the objects in the list:
+
+```python
+myList = [1,2,3,4,5]
+```
+
+List also support indexing and slicing. Lists can be nested and also have a variety of useful method that can be called off of them.
+
+Let's make some examples:
+
+```python
+# Our lists can have any object type!
+
+myList = ['string', 1, 5.0, True]
+
+# We can also use indexing!
+
+print(myList[0]) # 'string'
+print(myList[1]) # '1'
+# Reverse indexing also works fine!
+print(myList[-1]) # 'True'
+
+# We can also use slicing!
+
+slicedList = myList[1:]
+
+print(slicedList) # [1,5.0, True]
+
+# We can also add new values to our list!
+# We have to use the method .append(variable)
+
+myList.append(False)
+# We have to keep in mind once we append a new value it will be stored at the end of the list!
+print(myList) # ['string', 1, 5.0, True, False]
+
+# We can also reasign new values!
+
+print(myList) # ['string', 1, 5.0, True, False]
+myList[4] = True
+print(myList) # ['string', 1, 5.0, True, True]
+myList[4] = False
+print(myList) # ['string', 1, 5.0, True, False]
+
+# We can also delete values of our list!
+# We have to use the method .pop(index), this method will return and delete the value we selected!
+# This method have an index values of -1 by default, so if you call the method without any index value it will delete the last value stored
+
+print(myList.pop()) # False
+# Remember pop returns the value we chose and delete it from the list!
+
+print(myList.pop(2)) # 5.0
+
+# We can also nest lists!
+
+numbersList = [1,2,3]
+nestedList = [numbersList, numbersList, numbersList]
+
+print(nestedList) # [ [1,2,3], [1,2,3], [1,2,3] ]
+
+# How can we access our values?
+
+print(nestedList[0][0]) # 1
+print(nestedList[1][1]) # 2
+print(nestedList[2][2]) # 3
+
+# We can also sort our list by using the .sort() method
+
+myList = [5,4,3,2,1]
+
+print(myList) # [5,4,3,2,1]
+
+myList.sort()
+
+print(myList) # [1,2,3,4,5]
+```
 
 <br>
 
 ### **Dictionaries**
 
+Dictionaries are unordered mappings for storing object; Dictionaries use a key-value pairing sequence!
+This key-value pair allow us to quickly grab object without needing to know an index location.
+
+This is their structure:
+
+```
+{ 'key': 'value', 'key1': 'value' }
+```
+
+Let's make some examples:
+
+```python
+
+# Our dictionaries could any object type we want!
+
+myDictionary = { 'user': 'zerquiolin', 'code': 911, 'numList': [1,2,3], 'numDictionary': {'one': 1} }
+
+# We can access our values by passing its key!
+
+print( myDictionary['user'] ) # 'zerquiolin'
+print( myDictionary['numList'] ) # [1,2,3]
+print( myDictionary['numDictionary']['one'] ) # 1
+
+# We can add object by refering to a new key and setting the value
+
+print(myDictionary) # {'user': 'zerquiolin', 'code': 911, 'numList': [1, 2, 3], 'numDictionary': {'one': 1}}
+myDictionary['newList'] = ['hi!','hola!']
+print(myDictionary) # {'user': 'zerquiolin', 'code': 911, 'numList': [1, 2, 3], 'numDictionary': {'one': 1}, 'newList': ['hi!', 'hola!']}
+
+# We can also reassign values by refering to the key and setting the value
+
+print(myDictionary) # {'user': 'zerquiolin', 'code': 911, 'numList': [1, 2, 3], 'numDictionary': {'one': 1}, 'newList': ['hi!', 'hola!']}
+myDictionary['user'] = "it's zerquiolin"
+print(myDictionary) # {'user': "it's zerquiolin!, 'code': 911, 'numList': [1, 2, 3], 'numDictionary': {'one': 1}, 'newList': ['hi!', 'hola!']}
+
+# If we want to retrieve the keys only we use .keys()
+
+keys = myDictionary.keys()
+print(keys) # dict_keys(['user', 'code', 'numList', 'numDictionary', 'newList'])
+
+# If we want to retrieve the values only we use .values()
+
+values = myDictionary.values()
+print(values) # dict_values(["it's zerquiolin", 911, [1, 2, 3], {'one': 1}, ['hi!', 'hola!']])
+
+# If we want to retrieve the items we use .items()
+
+items = myDictionary.items()
+print(items) # dict_items([('user', "it's zerquiolin"), ('code', 911), ('numList', [1, 2, 3]), ('numDictionary', {'one': 1}), ('newList', ['hi!', 'hola!'])])
+
+
+
+```
+
 <br>
 
 ### **Tuples**
+
+Tuples are very similar to lists. However they have on key difference ~ **IMMUTABILITY**.
+
+Once an element is inside a tuple it cannot be reassigned.
+
+The tuples structure is parenthesis:
+
+```
+( 1, 2, 3)
+```
+
+Let's make some examples:
+
+```python
+# As tuples are very similar to list we can have different object types!
+
+myTuple = ( 1, 'one', True, [1,2,3] )
+
+# How can we access our values?
+
+print(myTuple[0]) # 1
+print(myTuple[2]) # True
+print(myTuple[3]) # [1,2,3]
+
+""" Built-In functions """
+
+myTuple = ( 'a', 'a', 'b' )
+
+# Tuples only have two functions:
+
+# count
+# returns the number of times an specific value is repeated
+
+print(myTuple.count('a')) # 2
+
+# index
+# returns the number of times an specific value is repeated
+
+print(myTuple.index('a')) # 0
+# Returns the index of the first match
+```
+
+Tuples are often used to secure our data and be sure that a value will never change!
+<br>
+
+### **Sets**
+
+Sets are unordered collections of **UNIQUE** elements.
+
+Meaning there can only be one representative of the same object!
+(You can only have one 'a', or one number 1 or so)
+
+Let's make a quick example:
+
+```python
+
+mySet = {'hi'} # Using it this way, we must have at least one item!
+# Or
+mySet = set();
+
+# How can we add values to my set?
+
+print(mySet) # set()
+mySet.add('zerquiolin');
+print(mySet) # {'zerquiolin'}
+mySet.add(911)
+print(mySet) # {'zerquiolin', 911}
+# It might look as a dictionary but it doesn't have keys!
+
+# Our sets can only contain unique values, so if we try to add multiple repeated values it will only store the first one!
+
+print(mySet) # {'zerquiolin', 911}
+mySet.add(911)
+print(mySet) # {'zerquiolin', 911}
+
+# We also can cast our data!
+
+myList = [1,1,1,1,2,2,2,2,3,3,3,3]
+mySet = set(myList)
+print(mySet) # [1,2,3]
+
+```
+
+<br>
+
+### **Booleans**
+
+Booleans are operators that allow us to convey **True** or **False** statements
+
+Let's make some quick examples:
+
+```python
+
+print( 1 > 0 ) # True
+print( 1 > 2 ) # False
+print( 1 == 2 ) # False
+print( 1 < 2 ) # True
+
+```
 
 <br>
 
 ### **Files**
 
-<br>
+Here we work with some of the basics of I/O over .txt files!
 
-### **Sets**
+We can read and write information over a .txt file, but, how can we do that?
 
-<br>
+**Data.txt**
 
-### **Booleans**
+```
+Hello
+There!
+How are you!?
+```
+
+**myFile.py**
+
+```python
+# As we want to read a file, we first need to open the file by using the open() method
+
+myFile = open('Data.txt')
+
+# How can we read our data?
+
+print(myFile.read()) # 'Hello\nThere!\nHow are you!?'
+# \n stands for a break line!
+
+# There is something important here, as we already read the file, there is a pointer that stays at the end of the characters, so if we read the file again:
+
+print(myFile.read()) #
+# We got nothing!
+# The way we can solve this problem is using the .seek(index) method, were by passing the index of the character you want to go the pointer will be redirected to that character as well!
+
+myFile.seek(0) # here our pointer returned to the start!
+
+
+""" IMPORTANT """
+
+# As we are using our Data.txt file, once we end our processes we MUST close our file, otherwise it will still open in the background!
+
+myFile.close()
+
+# But here is a cool feature that allows you to be focused on more logic and processes than keeping an eye on closing the file when your done using it:
+
+with open('Data.txt') as myFile:
+   data = myFile.read()
+
+# With that structure we are calling our file and assigning it to our variable 'myFile', this way, we don't actually need to be worried about closing the file!
+# Also, notice there is an indentation, everything on that indentation will recognize our 'myFile' variable otherwise won't
+
+# Now we know how to handle opening and assigning a file, but how can we correctly write and/or read?
+
+# Inside our open() method there is a parameter called 'mode' which allows us to decide whether we want to read, write, or both!
+
+# But first let's take look on its modes:
+```
+
+**Reading, Writing, Appending Modes**
+
+1. mode = 'r' -> in read only
+2. mode = 'w' -> is write only (will overwrite files or create new files)
+3. mode = 'a' -> is append only (will add on to files)
+4. mode = 'r+' -> is reading and writing
+5. mode = 'w+' -> ia writing and reading (Overwrites existing files or creates new files)
+
+```python
+# Let's use the w mode to create a new file with text!
+
+with open('newFile.txt', mode = 'w') as myFile:
+   myFile.write('Hey This is my new File!');
+
+# Once we get how this method works we can now implement advance features, for example, let's create a list bases on the content of our text file
+
+ with open('newFile.txt', mode = 'w') as myFile:
+    content = myFile.readlines()
+
+# .readlines() method will return each line as a single value on a list object!
+
+# Finally we have to keep in mind our path locations:
+
+# Windows = C:\\Users\\UserName\\Folder\\Test.txt
+# notice the doubel backslash
+
+# Mac = /Users/UserName/Folder/Test.txt
+```
 
 <br>
 
