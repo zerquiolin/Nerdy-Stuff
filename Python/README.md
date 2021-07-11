@@ -724,8 +724,6 @@ with open('newFile.txt', mode = 'w') as myFile:
 
 ## **Comparison Operators**
 
-<br>
-
 ### **Basic Operators**
 
 | Operator | Description                                                                                                                   |
@@ -788,21 +786,741 @@ Keep in mind:
 
 ### **If ~ Elif ~ Else**
 
+Let's learn about control flow!
+We often want certain code to execute when a particular condition has been met!
+
+To control this flow of logi we use some keywords:
+
+- if
+- elif
+- else
+
+Control flow syntax makes uses of colons and indentation (whitespaces)
+This indentation system is crucial to python and what sets it apart from other programming languages.
+
+IF syntax:
+
+```python
+if condition:
+   # CODE
+else:
+   # CODE
+
+# The else statement declares what happens if we dont fulfill the if condition, but keep in mind we CAN'T chain multiple else statements, that stands for ELIF statements!
+```
+
+ELIF syntax:
+
+```python
+if condition:
+   # CODE
+elif:
+   # CODE
+elif:
+   # CODE
+else:
+   # CODE
+```
+
+Let's make som quick examples:
+
+```python
+if 2 > 5:
+   # CODE
+elif 2 > 3:
+   # Other CODE
+else:
+   # More CODE
+```
+
 <br>
 
 ### **For loops**
+
+Many objects in python are 'iterable' meaning we can iterate over every element in the object!
+
+We can use for loops to execute a block of code for every iteration!
+
+<br>
+
+**for loop syntax**:
+
+```python
+for variableName in objectName:
+   # CODE
+```
+
+Let's make some quick examples:
+
+```python
+""" Variables """
+
+myList = [ 1, 2, 3]
+
+for data in myList:
+   print(data) # 1 2 3
+
+""" Strings """
+
+word = 'Hello World!'
+
+for letter in word:
+   print(letter) # H e l l o W o r l d !
+
+""" Tuple Unpacking """
+
+myTupleList = [ (1,2), (3,4), (5,6) ]
+
+# NORMAL
+for value in myTupleList:
+   print(value) # (1,2) (3,4) (5,6)
+
+# UNPACKING
+for a,b in myTupleList:
+   print(a) # 1 3 5
+   print(b) # 2 4 6
+
+# Output: 1 2 3 4 5 6
+
+# By destructuring or unpacking our tuple values into our selected variables, we can obtain each individual value instead of the entire parenthesis!
+""" Library Unpacking """
+
+myLibrary = { 'key': 'value', 'key0': 'value0' }
+
+# NORMAL
+for value in myLibrary:
+   print(value) # 'key' 'key0'
+
+# By default the for loop iterates on the keys only, if we want to retrieve the items we should use .items()
+
+# ITEMS
+for value in myLibrary.items():
+   print(value) # ('key'; 'value') ('key0': 'value0')
+
+# If we want to retrieve the values only we should use .values()
+
+# VALUES
+for value in myLibrary.values():
+   print(value) # 'value' 'value0'
+
+# But if we want to get both keys and values on separate variables inside the same for loop we can use the distructuring/unpacking functionality with .items() method
+
+# UNPACKING
+for key,value in myLibrary.items():
+   print(key) # key key0
+   print(value) # value value0
+
+# Output: key value key0 value0
+```
 
 <br>
 
 ### **While Loops**
 
+While loops will continue to executo a block of code **while** some condition remains true.
+
+**While loop syntax**:
+
+```python
+while someBooleanCondition:
+   # CODE
+```
+
+We also can combine while loops with else statements!
+
+```python
+while someBooleanCondition:
+   # CODE
+else:
+   # Other CODE
+```
+
+let's make som quick examples:
+
+```python
+index = 0
+while index < 5:
+   print(f'The current index is: {index}')
+   index += 1
+else:
+   print(f'The current index ({index}) is greather than 5')
+
+# The index will make the condition true and the code inside the while will execute until the condition is no longer true!
+# Once the condition turns False, the else code will execute once!
+```
+
 <br>
 
-### **Range()**
+### **Keywords For Loops**
+
+We have special keyword for our loops!
+
+**Break**
+
+The break will actually stop the loop and end its iterations no matter if the condition is still true or if the object was not fully iterated!
+
+```python
+user = 911
+userIds = [1,911,123,404,200]
+
+for code in userIds:
+   if user == code:
+      break
+   print(code)
+
+# Output: 1
+
+# The foor loop will stop once the userId value is the same as the user!
+```
+
+**Continue**
+
+Continue will skip the current cycle!
+
+```python
+user = 911
+userIds = [1,911,123,404,200]
+
+for code in userIds:
+   if user == code:
+      continue
+   print(code)
+
+# Output: 1 123 404 200
+
+# The foor loop will skip the current cycle once the userId value is the same as the user!
+```
+
+**pass**
+
+Will do nothing at all, but will help you avoid errors!
+
+Imagine we are creating our app and decided to set a for loop but still don't know what the actual code inside that loop will be, so you code something like this:
+
+```python
+for value in 'Hello World!':
+   # TODO
+```
+
+This is completely wrong and python will not accept it, instead, you can use the keyword 'pass' to avoid errors and still have the TODO loop:
+
+```python
+for value in 'Hello World!':
+   # TODO
+   pass
+```
+
+<br>
+
+### **Usefuil Operator**
+
+#### **Range**
+
+We could Range to define lists, ranges, count and more!
+
+_Range syntax:_
+
+```python
+range( initialIndex , finalIndex , jump )
+
+# We can also only set the finalIndex
+
+range( FinalIndex )
+
+# As well as only the initialIndex and the finalIndex
+
+range( initialIndex, finalIndex )
+```
+
+Let's make some quick examples:
+
+```python
+
+""" for loops """
+
+for value in range(10):
+   print(value)
+
+# Output:
+# 0
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+
+""" Lists """
+
+myList = list(range(1:11))
+print(myList)
+
+# Output:
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+# 10
+```
+
+<br>
+
+#### **Enumerate**
+
+Enumerate allow us to keep an eye on the index cycle of our iteration, the way it works is returning a tuple with the current index and the values.
+
+Let's make a quick example:
+
+```python
+
+myList = ['a', 'b', 'c']
+
+for value in myList:
+   print(value)
+
+# Output:
+# 'a'
+# 'b'
+# 'c'
+
+# Now with enumerate
+for value in enumerate(myList):
+   print(value)
+
+# Output:
+# (0,'a')
+# (1,'b')
+# (2,'c')
+
+# And we can also destructure our values!
+for index, value in enumerate(myList):
+   print(f'Value: {value} ~ Index: {index}')
+
+# Output:
+# Value: a ~ Index: 0
+# Value: b ~ Index: 1
+# Value: c ~ Index: 2
+
+# Complex example:
+
+myLibrary = {'key': 'value', 'key0': 'value0'}
+for index, data in enumerate(myLibrary.items()):
+   key, value = data
+   print(f'Index: {index} ~ Key: {key} ~ Value: {value} ')
+
+# Output:
+# Index: 0 ~ Key: key ~ Value: value
+# Index: 1 ~ Key: key0 ~ Value: value0
+```
+
+<br>
+
+#### **Zip**
+
+Zip help us to associate lists into tuples, meaning we can pair different lists, each tuple will contain the values of the same index, but we have to keep in mind if our lists are uneven the values that doesn't have a pair on the other lists will not be included.
+
+_syntax:_
+
+```python
+zip(list0, list1, ...listn)
+```
+
+```python
+list0 = [1,2,3,4]
+list1 = ['one', 'two', 'three']
+
+# Notice our lists are uneven!
+
+zipList = zip(list0, list1)
+
+# But we have to keep in mind once we use the zip method the result will be a zip object!
+# To access its values we can use for loops or even parse its type (parse will be explained further in the course!)
+
+print( list( zipList ) )
+
+# Output: [(1, 'one'), (2, 'two'), (3, 'three')]
+
+# or
+
+for item in ziplist:
+   print(item)
+
+# Output:
+# (1, 'one')
+# (2, 'two')
+# (3, 'three')
+```
+
+<br>
+
+#### **In Operator**
+
+In operator helps us know if an element is stored on a specific object by returning True or False!
+
+_Syntax:_
+
+```python
+value in value0
+```
+
+let's make some quick examples:
+
+```python
+print( 'a' in 'How are you?' ) # True
+
+myList = [1,2,3,4,5]
+index = 0
+print( index in myList ) # False
+
+myLibrary = {'key': 'value', 'key0': 'value0'}
+print( 'key' in myLibrary.keys() ) # True
+```
+
+<br>
+
+#### **Min**
+
+Min help to fin the minimum element of a list!
+
+_syntax:_
+
+```python
+min(myList)
+```
+
+Let's make some quick examples:
+
+```python
+numbersList = [5,4,3,2,1]
+lettersList = ['a', 'b', 'c', 'd', 'e']
+
+print( min( numbersList ) ) # 1
+print( min( lettersList ) ) # 'a'
+```
+
+<br>
+
+#### **Max**
+
+Max help to fin the maximum element of a list!
+
+_syntax:_
+
+```python
+max(myList)
+```
+
+Let's make some quick examples:
+
+```python
+numbersList = [5,4,3,2,1]
+lettersList = ['a', 'b', 'c', 'd', 'e']
+
+print( max( numbersList ) ) # 5
+print( max( lettersList ) ) # 'e'
+```
+
+<br>
+
+#### **Random Library**
+
+Random is a python built-in library that contains lot of important and useful functions!
+
+<br>
+
+##### **Shuffle**
+
+Shuffle allows us to shuffle our list on much easier way, but we have to keep in mind the shuffle function doesn't return anything!
+
+_Syntax:_
+
+```python
+# Before checking the syntax we have import our library!
+
+# Import
+from random import shuffle
+
+# Syntax
+shuffle(myList)
+
+# Code
+myList = [1,2,3,4,5]
+print(myList) # [1,2,3,4,5]
+
+# shuffle
+shuffle(myList)
+print( myList ) # [4, 1, 5, 2, 3]
+
+# This is only one possibility, remember it shuffles it randomly!
+```
+
+<br>
+
+##### **Radint**
+
+Radint returns a random integer between the range we assign it to be!
+
+_Syntax:_
+
+```python
+# Before checking the syntax we have import our library!
+
+# Import
+from random import randint
+
+# Syntax
+randint( intialIndex, finalIndex )
+# Both initial and final index will be taken!
+
+# Code
+print( randint( 0, 5 ) ) # 3
+print( randint( 0, 10 ) ) # 4
+print( randint( 0, 100 ) ) # 30
+print( randint( 0, 1000 ) ) # 566
+
+# These are only some possibilities, remember its random!
+```
+
+<br>
+
+#### **Input**
+
+Once we want to retrieve some information from the user we could use the input() method, which allows us to access the input of the user via command prompt!
+
+**We have to keep in mind each value the input method returns will be a string type!**
+
+_Syntax:_
+
+```python
+# We have to keep in mind the input() method returns the actual value, so we have to store that data!
+
+# Syntax
+input( text ) # This text will be shown to the user!
+
+# Code
+userInput = input( "What's your name?" )
+print( f'Hello {userInput}, I hope you are having a great day!' )
+
+# Lets say our input is: zerquiolin, then the output will be:
+
+# 'Hello zerquiolin, I hope you are having a great day!'
+```
+
+<br>
+
+#### **Parse**
+
+Once we encounter a situation where the types we have don't meet the requirements we need we need to change its types!
+
+But how can we change types?
+
+~ To change an object type we have to specify its new type and then wrap the object inside parentheses:
+
+```python
+value = '911'
+number = int(value)
+```
+
+Let's make a quick example:
+
+```python
+
+input0 = int(input('first value'))
+input1 = int(input('second value'))
+
+print(f'{input0} + {input1} = {input0+input1}')
+
+# Lets say our first input was: 5 and our second input was: 5, then our output will be:
+# 5 + 5 = 10
+```
+
+<br>
+
+in operator
+
+min()
+
+max()
+
+shuffle (list) # from random import shuffle
+
+randint(start,end) # from random import randint
+
+input(text) always string
+
+parse: int(value) float(value)
 
 <br>
 
 ### **List Comprehensions**
+
+List comprehensions are a unique way of quickly creating a list with python.
+
+If you find yourself using a for loop along with .append() to create a list, _List Comprehensions_ are a good alternative!
+
+_This topic is pretty tricky but once you get how it works everything will become more natural!_
+
+Let's start by its syntax:
+
+![image](ListComprehensionsSyntax.png)
+
+As you can see, we have an expression that used to be inside the for loop, this expression if the proccess we want our item to follow and then return its result and save it into our list/set/library!
+
+Normal view:
+
+```python
+for item in iterable:
+   expression
+```
+
+Now, let's take a look at this example:
+
+![image](ListComprehensionsExample.png)
+
+As you can see, we have our Expression 'x\*\*2', for our loop that contains our item 'x' and our iterable 'range(0,50)' as well as an incorporated if statements!
+
+So once we start iterating our range() element, for each cycle we are in, the item 'x' will be operated into its second power and returned!
+
+But what is we want and else statement?
+
+Let's make a quick example with if ~ else statements:
+
+```python
+print( list( 'even' if item % 2 == 0 else 'odd' for item in range(1,11) ) )
+
+# Output: ['odd', 'even','odd', 'even','odd', 'even','odd', 'even','odd', 'even']
+```
+
+If we want to add another if statement we set the condition after the for statement:
+
+```python
+myList = [1,2,3,4,5,6,7,8,9]
+
+print( list( 'even' if item % 2 == 0 else 'odd' for item in myList if item in [3,4,5,6] ) )
+
+# Output: ['odd', 'even', 'odd', 'even']
+
+# We have to keep in mind once we set our if statement after the loop we can't chain an else statement!!
+```
+
+Let's make some examples with list comprenhesions and its normal normal way, so you get the idea even better!
+
+```python
+""" First Example """
+
+# List Comprenhnesions
+
+myList = [ item for item in range(0,11) if item % 2 == 0 ]
+print(myList) # 0 2 4 6 8 10
+
+# Normal
+
+myList = []
+for item in range(0,11):
+   if( item % 2 == 0 ):
+      myList.append(item)
+print(myList)
+
+""" Second Example """
+
+# List Comprehensions
+
+myList = [ 'even' if item % 2 == 0 else 'odd' for item in range(1,11) ) ]
+print(myList) # ['odd', 'even', 'odd', 'even', 'odd', 'even', 'odd', 'even', 'odd', 'even']
+
+# Normal
+
+myList = []
+for item in range(1,11):
+   if item % 2 == 0:
+      myList.append('even')
+   else:
+      myList.append('odd')
+print(myList) # ['odd', 'even', 'odd', 'even', 'odd', 'even', 'odd', 'even', 'odd', 'even']
+
+```
+
+We shouldn't code more complicated List Comprehensions than the ones we just did, the code gets messy and we sacrifice some readability!
+
+Nevertheless, if you want to push yourself more with List comprehensions, here are some more complex examples:
+
+```python
+
+""" First Example """
+
+# List Comprehensions
+
+myList = [ 'even' if item % 2 == 0 else 'odd' for item in range(1,11) if item in [2,3,4,5,6,7,8] ]
+print(myList) # ['even', 'odd', 'even', 'odd', 'even', 'odd', 'even']
+
+# Normal
+
+myList = []
+for item in range(1,11):
+   if item in [2,3,4,5,6,7,8]:
+      if item % 2 == 0:
+         myList.append('even')
+      else:
+         myList.append('odd')
+print(myList) # ['even', 'odd', 'even', 'odd', 'even', 'odd', 'even']
+
+""" Second Example """
+
+# Nested if ~ else statements
+
+# List Comprehensions
+
+numbers = [1,2,3,4,5,6,7,8]
+myList = [-1,0,1,2,3,4,5,6,7,8,9]
+
+newList = [ 'one' if value == 1 else 'two' if value == 2 else 'other' for value in myList if value in numbers ]
+
+print( newList ) # ['one', 'two', 'other', 'other', 'other', 'other', 'other', 'other']
+
+# Normal
+
+newList = []
+
+for value in myList:
+   if value in numbers:
+      if value == 1:
+         newList.append('one')
+      else:
+         if value == 2:
+            newList.append('two')
+         else:
+            newList.append('others')
+
+print( newList ) # ['one', 'two', 'other', 'other', 'other', 'other', 'other', 'other']
+
+""" Third Example """
+
+# Nested for loops
+
+# List Comprehension
+
+myList = [ x + y for x in range(0,4) for y in range(0,4) ]
+
+print(myList) # [0, 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5, 3, 4, 5, 6]
+
+# Normal
+
+myList = []
+
+for x in range(0,4):
+   for y in range(0,4):
+      myList.append(x+y)
+
+print(myList) # [0, 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5, 3, 4, 5, 6]
+```
 
 <br>
 
@@ -814,9 +1532,203 @@ Keep in mind:
 
 ### **Methods**
 
+Built-in object in python have a variety of methods you can use!
+
+The most common one we have used is append() from the list object!
+
+There is tons of method you can find on the [python documentation!](https://devguide.python.org/)
+
 <br>
 
 ### **Functions**
+
+Creating a clean repeteable code is a key part of becoming an effective programmer.
+
+**Functions** allow us to create blocks of code that can be easily executed many times, without needing to constantly rewrite the entire block of code!
+
+<br>
+
+#### **Def Keyword**
+
+Creating a function requires a very specific syntax, including the _def_ keyword, correct indentation, and proper structure!
+
+_Syntax:_
+
+```python
+def function_name():
+   # code
+```
+
+Inside the parenthesis is where we are going to send the variables we want to interact with inside the function! For example:
+
+```python
+def function_name( name ):
+   print( f'Hello {name}' )
+
+function_name( 'zerquiolin' ) # zerquiolin
+```
+
+Notice we have a particular syntax on the function name, this is called snake case, is based on word divided by '\_' and in lower case, but you can choose to use it or not, its totally optional!
+
+We also have somethig called **Return** which allow us to send back the result of the function and assign its output to a new variable. For example:
+
+```python
+def function_name():
+   return 'Hello World!'
+
+greetings = function_name()
+
+print(greetings) # Hello World!
+```
+
+<br>
+
+#### **Basic Of Funcionts**
+
+We have seen some examples of functions, but lets take a look at this case:
+
+```python
+def function_name( name ):
+   print( f'Hello {name}' )
+
+function_name() # Here we will get an error because we didn't sent any values for the name parameter!
+```
+
+But there is a way to handle this situation, we can set default values for our parameters!
+
+```python
+def function_name( name = 'default' ):
+   print( f'Hello {name}' )
+
+function_name() # Hello default
+```
+
+Now let's create a quick example where we can see the functions on a real situation:
+
+We will create function that returns the even number of the given list!
+
+```python
+numbersList = [1,2,3,4,5,6,7,8,9,10]
+
+def even_numbers( iterable ):
+   temporalList = []
+
+   for number in iterable:
+      if number % 2 == 0:
+         temporalList.append(number)
+
+   return temporalList
+
+evenNumbersList = even_numbers( numbersList )
+
+print( evenNumbersList ) # numbersList
+```
+
+<br>
+
+#### **Functions And Tuple Unpacking**
+
+To comprehend better our functions let's make a function that returns the employee of the month based on a list that contains tuples, each tuple contains the name and the hours each person worked through the month:
+
+```python
+
+workers = [ ('Zerquiolin', 911), ('Nadiv', 900), ('David', 850), ('Nicolas', 800) ]
+
+def employee_of_the_month( employees ):
+
+   maxHours = 0
+   winer = ''
+
+   for employee, hours in  employees:
+      if hours > maxHours:
+         winer = employee
+         maxHours = hours
+
+   return (winer, maxHours)
+
+results = employee_of_the_month(workers)
+print( results ) # ('Zerquiolin', 911)
+```
+
+<br>
+
+#### **args & kwargs**
+
+Imagine you are creating a function and suddenly you encounter a situation where you have to pass n variables as parameters, but you don't have the exact amount it's going to be passed!
+
+What could we do in this situation?
+
+As you may know we can set optional parameters, let's make and example where we add each value we get!
+
+```python
+def add( a, b, c=0, d=0, e=0 ):
+   return ( a+b+c+d+e )
+```
+
+As you can see, we set 'c', 'd' and 'e' as optional parameters, so we have no problem using 2 to 5 variables in our function, but what if we have more than 5, or more than 10, 100, 1000?
+That gets a little complicated and long doesn't it?
+
+Luckily we have a solution called **\*args**, it takes all the variables the user pass to the function and create a tuple with them:
+
+Let's refactor our add function:
+
+```python
+def add( *args ):
+   return ( sum(args) )
+```
+
+See how easy it was to improve our code and accept n variables?
+
+But don't worry you don't necessarily must call the variable 'args' what makes the magic is the star before the variable name!
+
+You can use whatever you want:
+
+```python
+def add( *whatMattersIsTheStar ):
+   return ( sum(whatMattersIsTheStar) )
+```
+
+We also have **\*\*kwargs** (keyword args), as **\*args** created a tuple, **\*\*\*kwargs** creates a library!
+
+_They work the same!_
+
+The difference is based on assigning values to the variables passed!
+
+Let's create a quick example where we create a library based on a employees list:
+
+```python
+def createEmployees( **lib ):
+   print( lib )
+
+printEmployees( e0 = 'Nadiv', e1 = 'Andres', e2 = 'David', e3 = 'Camila', e4 = 'Daniel',)
+
+# Output {'e0': 'Nadiv', 'e1': 'Andres', 'e2': 'David', 'e3': 'Camila', 'e4': 'Daniel'}
+```
+
+And yes!
+We can use both **\*args** **\*\*kwargs** in the same function!
+
+```python
+def mixArgs( *args, **kwargs ):
+   print(args)
+   print(kwargs)
+```
+
+But we have to keep in mind we can't change between _\*args_ and _\*\*kwargs_ values:
+
+We can NOT do this:
+
+```python
+mixArgs( 1,2,3, name = 'zerquiolin', 4, hola = 'hello' )
+```
+
+It is completely incorrect, we first need to set our \*args values and then our \*\*kwargs values!
+
+We should do this instead:
+
+```python
+mixArgs( 1,2,3,4, name = 'zerquiolin', hola = 'hello' )
+```
 
 <br>
 
