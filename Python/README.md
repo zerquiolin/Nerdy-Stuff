@@ -226,7 +226,7 @@ print(reversedIndexingGreetings) # '!'
 slicedGreetings = greeting[2:] # from index 2 to the end
 print(slicedGreetings) # 'llo World!'
 
-slicedGreetings = greeting[2:5] # from index 2 to index 5
+slicedGreetings = greeting[2:5] # from index 2 to index 4
 print(slicedGreetings) # 'llo '
 
 slicedGreetings = greetings[6:12:1] # jump of 1
@@ -1583,7 +1583,7 @@ print(greetings) # Hello World!
 
 <br>
 
-#### **Basic Of Funcionts**
+#### **Basic Of Functions**
 
 We have seen some examples of functions, but lets take a look at this case:
 
@@ -1734,13 +1734,265 @@ mixArgs( 1,2,3,4, name = 'zerquiolin', hola = 'hello' )
 
 ### **Lambda Expressions**
 
+Lambda expressions are a way to quickly create one time use functios that you don't really name, use them one time and never use them again!
+
+Let's take a look on map and filter before moving on!
+
+#### **Map**
+
+The map function helps us to map over each item on the list and make a process on them, but this does not affect the original list, so we can save the result parsing it into a list or more!
+
+Syntax:
+
+```python
+map( function, iterable )
+```
+
+Let's make some quick examples:
+
+```python
+def square( number ):
+   return number ** 2
+
+numsList = [1,2,3,4,5,6,7,8,9]
+squareNumsList = list( map( square, numsList ) )
+
+print( squareNumsList )
+# Output: [1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+
+_Notice once we pass our function, we didn't send the parameters, map will get the parameters by itself as you reference the iterable!_
+
+You can also do complex proccesses:
+
+```python
+def isEven( number ):
+   return {number: True if number % 2 == 0 else False}
+
+numsList = [1,2,3,4,5,6,7,8,9]
+evenNumsList = list( map( square, numsList ) )
+
+print( evenNumsList )
+# Output: [{1: False}, {2: True}, {3: False}, {4: True}, {5: False}, {6: True}, {7: False}, {8: True}, {9: False}]
+```
+
 <br>
 
-### **Nested Statements**
+#### **Filter**
+
+Filter works pretty similar to map, the difference lies in returning only the items or values that meet the requirements we passed in, we are filtering out our values!
+
+Syntax:
+
+```python
+map( function, iterable )
+```
+
+_We have to keep in mind, our function must return true or false so our value can be returned, otherwise, it won't work!_
 
 <br>
 
-### **Scope**
+Let's recreate the example of the even number we did on map, but using filter instead:
+
+```python
+def checkEven( number ):
+   return number % 2 == 0
+
+numsList = [1,2,3,4,5,6,7,8,9]
+evenNumsList = list( filter( checkEven, numsList ) )
+
+print( evenNumsList )
+# Output: [2,4,6,8]
+```
+
+<br>
+
+Now that we have clear the uses of map and filter functions, we can create anonymous functions (lambda expressions!)
+
+Let's start by converting this function :
+
+```python
+def square( num ):
+   return num ** 2
+```
+
+into a lambda expression:
+
+```python
+lambda num: num ** 2
+```
+
+Notice we got rid of the _def_ keyword and the parenthesis of the parameters, as well as the _return_ keyword!
+This is a lambda expression, we don't usually give it a name because they are thought of as a one-time use!
+
+Lambda expressions work by defining a variable after the keyword _lambda_, then, after the colon, we encounter the expression where the value we were given is processed and later returned!
+
+Nevertheless, if you want to give it a name:
+
+```python
+square = lambda num: num ** 2
+```
+
+Lambda expressions are useful when using map and filter functions!
+
+Let's make some quick examples:
+
+```python
+
+nums = [1,2,3,4,5,6,7,8,9]
+
+""" Map """
+
+print( list( map( lambda number: number ** 2, nums ) ) )
+# Output: [1, 4, 9, 16, 25, 36, 49, 64, 81]
+print( nums )
+# Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+""" Filter """
+
+print( list( filter( lambda number: number if number % 2 == 0 else number ** 2 ), nums ) )
+
+```
+
+<br>
+
+### **Nested Statements & Scope**
+
+Once you create a varible it gets stored in whats called the name space, and each variable has a _scope_!
+The _scope_ determines the visibility of our variables in other parts of our code!
+
+Variables follow the **LEGB Rules**:
+
+- **L** ~ Local
+  - Names assigned in any way within a function (def or lambda) and not declared global in that function.
+- **E** ~ Enclosing function locals
+  - Names in the local scope of any and all enclosing functions (def or lambda), from inner to outer.
+- **G** ~ Global (module)
+  - Names assigned at the top-level of a module file, or declared global in a def whitin the file!
+- **B** ~ Built-in (python)
+  - Names preassigned in the built-in names module: open, range, SyntaxError, ...
+
+Keep in mind this is the actual order python will looking!
+
+Let's create a basic example:
+
+```python
+# Let's create a 'global', 'enclosing' and 'local' variables!
+# Enclosing function local variables are just functions inside functions!
+
+""" Global variable """
+
+word = 'Global variable'
+
+
+def printWord():
+
+   """ Enclosing function local """
+
+   word = 'Enclosing function' # This is a local variable for printWord()!
+
+   def newWord():
+
+      """ Local variable """
+
+      word = 'Local'# This is a local variable for printWord()!
+      print( f"I'm a {word}" )
+
+   newWord()
+
+printWord()
+```
+
+Notice we have a _global_, _enclosing_ and _local_ variable with the same name, but how can we know which value will take?<br>
+It all depends on the name space, let's look at the **LEGB** rules, this rules state a specficic pattern or order to follow, so let's imagine we are at level 0 inside the _print()_ method on the **_newWord()_** function and the nearest **_'word'_** variable we have is the 'local' variable within this function with a value of 'Local variable', so this is the value it will take, but what if we comment out that local variable? <br>
+Well, As the scope of the **_'word'_** variable inside the **_printWord()_** function _enclosures_ the **_newWord()_** function the _print()_ method will jump one level up and adquire its value ('Enclosing function')!<br>
+And again, what happens if we comment out this variable? <br>
+As we have a _global_ variable also called **_word_** that enclosures our **_printWord()_** function, the _print()_ method will jump one level up and get its value ('Global variable')!
+
+<br><br>
+
+Now we have certain knowledge of scope and nested statements, we need to keep something really **important** in mind!
+
+<br>
+
+If we declare a local variable that already exits globaly, once we update that variable, the update will only occur locally, because of its scope and it wont be able to extend to another name space level!
+
+```python
+""" Global """
+
+name = 'zerquiolin'
+
+def printName():
+
+   """ Local """
+
+   name = "it'szerquiolin"
+
+   print(name)
+
+
+"""
+As you can see, we have to variables with the same name but different scope, so let's try printing them out to see the magic!
+"""
+
+print( name ) # 'zerquiolin'
+
+printName() # "it'szerquiolin"
+
+print( name ) # 'zerquiolin'
+```
+
+Due to the scope of local variables we cannot affect global variables, but there is a way!
+Using the keyword **global** before the local assignment we assure the variable we just declared will be taken from the global name space!
+
+```python
+""" Global """
+
+name = 'zerquiolin'
+
+def printName():
+
+   """ Global in Local """
+
+   global name # Declaring the global variable
+
+   name = "it'szerquiolin" # Updating the global variable!
+
+   print(name)
+
+
+"""
+As you can see, we just declare locally our global variable and updated it, now lets try printing them out to see the magic!
+"""
+
+print( name ) # 'zerquiolin'
+
+printName() # "it'szerquiolin"
+
+print( name ) # "it'szerquiolin"
+```
+
+_And that if how you locally reassign a global variable!_
+
+Nevertheless, it's recommended to use a more basic method, requiring the global variable via parameters and returning its new value!
+
+```python
+""" Global """
+
+name = 'zerquiolin'
+
+def printName(name):
+
+   name = "it'szerquiolin" # Updating the global variable!
+
+   return name
+
+print( name ) # 'zerquiolin'
+name = printName(name)
+print( name ) # "it'szerquiolin"
+```
+
+This method is often used with larger scripts, so this way you can easily debug your code and prevent accidental updates!
 
 <br>
 
