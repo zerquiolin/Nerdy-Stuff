@@ -2000,17 +2000,169 @@ This method is often used with larger scripts, so this way you can easily debug 
 
 ## **Object Oriented Programming 'OOP'**
 
-<br>
+Object Oriented Programming (OOP) allows programmers to create their own objects that have methods and attributes.
 
-### **Objects**
+Recall that after defining a string, list, dictionary, or other objects, you were able to call methods off of them with the .method_name() syntax.
 
-<br>
+In general, OOP allows us to create code that is repeatable and organized.
 
-### **Classes**
+For much larger scripts of python code, functions by themself aren't enough fo organization and repeatability.
 
-<br>
+Commonly repeated tasks and objects can be defined with OOP to create code that is more usable!
 
-### **Methods**
+_let's check the syntax:_
+
+```python
+# Let's start by the 'class' keyword, this is what defines an object
+
+class NameOfClass():
+   # Notice we use camel case, it's usually used for classes name just as it's usually used snake case for functions! but don't worry, you can use whatever you feel comfortable with
+
+   # We also have an special method called __init__() this allows us to create an instance of the actual object!
+   def __init__(self, param1, param2):
+      # Notice we have a 'self' keyword and two parameters, the self keyword help us to link parameters directly to the instance, we assign that value to an attribute of the object, this way we know we are refering to the variables passed on the instance and not a global variable
+      self.param1 = param1
+      self.param2 = param2
+
+
+   # We can also link methods/functions to this class by passing self as a parameter!
+
+   def method_name(self):
+      # CODE
+      print(self.param1)
+      # remember we link the param1 to the class?
+      # This way python knows you are calling the connected attribute and not a global variable
+```
+
+We just saw a brief example and explanation of classes, but now let's take a closer look!
+
+As you know what defines an object is the keyword 'class', and inside our object have to use the '\_\_init\_\_()' method, where we pass in the 'self' keyword that connects that method to our object as well as our parameters, keep in mind the init method its automaticly runned when we call the class, creating a new instance!
+
+But there is something important we need to know...
+
+**_attributes_**
+
+The attributes are basically variables linked to our object and unique for each instance of the class, how can we define them?
+
+Remember we used the 'self' keyword to link the init method, we can use to link our own methods and attributes!
+
+```python
+class Dog():
+   # By using the class keyword we are creating a dog object!
+
+   # Let's define our init method
+   def __init__(self, breed, name, spots):
+      self.breed = breed
+      self.name = name
+      self.spots = spots
+      # Here we just created our object attributes!
+      # Notice our attributes have the same name as the parameters of the init method, this is a common and good practice, nevertheless, you can call and assign your attributes to whatever you want!
+
+   # Let's create and link our method
+   def greet(self):
+      return f"Hi! my name is {self.name} and I'm a {self.breed} dog! Nice to meet you!"
+   # By passing in the self keyword we are linking that method to our object!
+
+
+
+   """
+   There is one important topic, just as we have the facility of dynamic typing we can't assure the right values will be passed to our object, so we have to document all related to our object for other programmers to understand and send correct values!
+   Luckily there is a way we will see later in the course!
+   """
+```
+
+We also have...
+
+**Class Object Attributes**
+
+This work just as the normal attributes, but they will be the SAME for each instance of the class, and we don't have to use the self keyword to define them, by declaring the attributes before the init method we are defining our _Class Object Attributes_!
+
+Example:
+
+```python
+class Dog():
+   # Class Object Attributes
+   bark = 'guau'
+
+   def __init__(self, name):
+      self.name = name
+
+   def methodName(self):
+      # now we have two ways to call the class object variables
+
+      # By using self
+      print( self.bark )
+
+      # By using the class name
+      print( dog.bark )
+
+      # They will work the same!
+
+```
+
+Last but not least important a brief explasnation of methods...
+
+**Methods**
+
+Methods are just functions inside a class and can be called by refering to the object and a thot to access its methods!
+
+Quick example:
+
+```python
+class Dog():
+   # Class Object Attributes
+   bark = 'guau'
+
+   def __init__(self, name):
+      self.name = name
+
+   # Remember when creating methods/functions we are just going to create operations and can ask for values/parameters to simplify our code or even have more information!
+   # Rememer we can also set default values for our parameters in case its not needed to send values
+   def methodName(self, number=1, day='monday'):
+      return f'Hi! My name is {self.name}, today is {day} and my number is {number}! {dog.bark}! {dog.bark}!'
+```
+
+Now that we have the basics let's create an example where we create and call our class:
+
+```python
+class Dog():
+# Defining our dog's object!
+
+    # Class Object Attributes
+    bark = 'woof'
+
+    # init method
+    def __init__(self, name, code):
+        self.name = name
+        self.code = code
+
+    # Our methods
+    def greetings(self, day='sunday'):
+        return f"Hello! I'm {self.name}:{self.code}, and today is {day}! {Dog.bark} {Dog.bark}!"
+
+
+
+""" Now let's create our instance, call our attributes and methods! """
+
+# We can create our object by passing the values in two different ways!
+# Refering the parameter and its value
+myDog = Dog(name='Rambo', code=911)
+# Passing only the value
+myDog = Dog('Rambo', 911)
+
+# Now we have access to its attributes and methods!
+
+# Let's call its attributes
+print( myDog.bark ) # 'woof'
+print( myDog.name ) # 'Rambo'
+print( myDog.code ) # 911
+
+# Let's call its methods
+print( myDog.greetings() ) # "Hello! I'm Rambo:911, and today is sunday! woof woof!"
+
+# Notice pretty important, we are not using parenthesis when we are calling our attributes, and it's not necessary, because we are retrieving information and not executing operations/methods!
+# If we call a method without the parenthesis we will get the method and its location in the storage, but will not execute its process!
+```
 
 <br>
 
