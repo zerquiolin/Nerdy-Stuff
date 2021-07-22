@@ -724,6 +724,8 @@ with open('newFile.txt', mode = 'w') as myFile:
 
 ## **Comparison Operators**
 
+<br>
+
 ### **Basic Operators**
 
 | Operator | Description                                                                                                                   |
@@ -2000,6 +2002,8 @@ This method is often used with larger scripts, so this way you can easily debug 
 
 ## **Object Oriented Programming 'OOP'**
 
+<br>
+
 Object Oriented Programming (OOP) allows programmers to create their own objects that have methods and attributes.
 
 Recall that after defining a string, list, dictionary, or other objects, you were able to call methods off of them with the .method_name() syntax.
@@ -2097,7 +2101,6 @@ class Dog():
       print( dog.bark )
 
       # They will work the same!
-
 ```
 
 Last but not least important a brief explasnation of methods...
@@ -2166,37 +2169,265 @@ print( myDog.greetings() ) # "Hello! I'm Rambo:911, and today is sunday! woof wo
 
 <br>
 
-### **Ineritance**
+### **Inheritance**
+
+Inheritance allows us to create new classes based on classes that already have been defined.
+
+One benefit of using inheritance is reusing code and reduce the complexity of a program!
+
+We have our principal/mold class that will allow us to create derivated or secondary classes:
+
+```python
+class Animal():
+
+   def __init__(self):
+      print('Animal created')
+
+   def eat(self):
+      print("I'm eating")
+```
+
+Now imagine we want to secondary class based on our primary class, we want to inherit its methods and attributes, so we use _inheritance_:
+
+To use inheritance we must pass in the class object inside the parameter of the secondary class and create a new instance inside its _init_ method:
+
+```python
+class Dog( Animal ): # Notice we are passing in the primary class we want to inherit from!
+
+   # Now for our inheritance to work, we need to create its instance inside the init method
+   def __init__(self):
+      Animal.__init__(self)
+
+   # Now once created an instance of 'dog', we can call the methods from 'Animal'
+
+   # And as normal we can create our own methods!
+   def bark(self):
+      print('woof woof')
+```
+
+```python
+myAnimal = Animal() # 'Animal created'
+myAnimal.eat() # "I'm eating"
+
+myDog = Dog() # 'Animal created'
+myDog.bark() # 'woof woof'
+myDog.eat() # "I'm eating"
+# See? We used an Animal method calling it from a Dog object!
+# We successfully inherit the properties of Animal!
+```
+
+But, what if we want our eat method behaves differently inside our Dog object?
+We can rewrite the method by calling it the same way on our Dog's object!
+
+```python
+class Dog( Animal ): # Notice we are passing in the primary class we want to inherit from!
+
+   # Now for our inheritance to work, we need to create its instance inside the init method
+   def __init__(self):
+      Animal.__init__(self)
+
+   # Now once created an instance of 'dog', we can call the methods from 'Animal'
+
+   # And as normal we can create our own methods!
+   def bark(self):
+      print('woof woof')
+
+   # Here we will rewrite the eat method from the Animal object!
+   def eat(self):
+      print("I'm a dog and I'm eating!")
+```
+
+```python
+myAnimal = Animal() # 'Animal created'
+myAnimal.eat() # "I'm eating"
+
+myDog = Dog() # 'Animal created'
+myDog.bark() # 'woof woof'
+myDog.eat() # "I'm a dog and I'm eating!"
+# See? We successfully make the eat method from Animal have a different behavior inside the Dog's class!
+```
 
 <br>
 
-### **Special Methods**
+### **Polymorphism**
+
+In python polymorphism, ferers to the way in which different object classes can share the same method name!
+
+Let's create an example with two different classes but with a method in common called 'speak'
+
+```python
+class Dog():
+   def __init__(self, name):
+      self.name = name
+
+   def speak(self):
+      return self.name + " says woof!"
+
+class Cat():
+   def __init__(self, name):
+      self.name = name
+
+   def speak(self):
+      return self.name + " says meow!"
+
+"""
+Now that we have two different classes with a method that has the same name we can demostrate polymorphism
+"""
+
+# Let's iterate over a list of Pets containing dogs and cats, and call the same method!
+
+myDog = Dog('Rambo')
+myCat = Cat('Snowball')
+pets = [myDog, myCat]
+
+for pet in pets:
+   print(pet.speak()) # Notice we don't mind which object is currently on the pet variable, we are just calling its eat method, and since both of the objects have this method, everything will work and we will have created our first polymorphism example!
+
+# Output:
+# Rambo says woof!
+# Snowball says meow!
+```
+
+The most common used for polymorphism is using **Abstract Clasess** and **Inheritance**!
 
 <br>
 
-<br><br>
+### **Abtract Classes**
 
-## **Errors And Exception Handling**
+What an abstract is, its never expected to be instantiated, its though as being a base class only!
+
+Remeber on our examples of inheritance, we inherit a class and instantiated it as well?
+In abstract classes we don't create a new instance, the objective of abstract classes is to be a template for different classes!
+
+Let's create our template class!
+
+```python
+class Animal():
+
+   def __init__(self, name):
+      self.name = name
+
+   def speak(self):
+      # Since this is a template method, we are not going to create any proccesses, we are going to throw an error, so once we create our subclass we must overwrite it!
+      raise NotImplementedError('Subclass must implement this abstrac method!')
+
+      """
+
+      Don't worry, we will take care of errors later in the course!
+
+      """
+```
+
+Now, if we try to create an instance of this class we will for sure can, but each of its methods will throw an error and will not be useful, remember we are using it as a **Template!**
+
+```python
+myAnimal = Animal('Pepe')
+myAnimal.speak() # Error Thrown!
+```
+
+Now let's create two subclasses of _Animal_:
+
+```python
+class Dog(Animal): # We are inheriting from our abstract class!
+
+   # Since we are using our Animal template, we don't necessarily need to implement the init method!
+
+   # Now as we know, we have an unimplemented method called speak, so now we are going to overwrite it to avoid the error and create our own functionality!
+
+   def speak(self):
+      print( f"Hello I'm {self.name}" )
+
+# Now let's make the same procces for our second subclass
+class Cat(Animal):
+
+   def speak(self):
+      print(f"Hello I'm {self.name}")
+```
+
+Now let's instance them and call its methods!
+
+```python
+myDog = Dog('Rambo')
+myCat = Cat('Snowball')
+
+myDog.speak() # "Hello I'm Rambo"
+myCat.speak() # "Hello I'm Snowball"
+```
 
 <br>
 
-### **Erros**
+### **Special/Magic/Dunder Methods**
 
-<br>
+As you know we have built-in methods like _len_ _del_ _print_ _str_ and many more, but if we try to use them with our own objects they will just simply not work!
 
-### **Exceptions**
+Let's create an example with a Book object:
 
-<br>
+```python
+class Book():
 
-### **Try**
+   def __init__(self, name, author, pages):
+      self.name = name
+      self.author = author
+      self.pages = pages
 
-<br>
 
-### **Except**
+"""
+So if we try to use some of the built-in methods, we will get an error!
+"""
 
-<br>
+myBook = Book('My Story', 'zerquiolin', 911)
 
-### **Finally**
+len(myBook) # Error Thrown!
+print(myBook) # Error Thrown!
+del(myBook) # Error Thrown!
+
+"""
+But don't worry!
+We can handle all these uses and avoid getting an error, as you know, we have our init method inside our classes that allows us to create our instances, well, as init there are tons of useful methods as well!
+
+We can use __len__ method to set a return for whenever a len() is called for our method!
+
+We can use __str__ method to set a return for whenever we want to use the str() method to parse our object or the print() method to print our object!
+
+We can use __del__ method to set a behavior once our object is deleted!
+"""
+```
+
+So let's create our new updated and functional object!
+
+```python
+class Book():
+
+   def __init__(self, name, author, pages):
+      self.name = name
+      self.author = author
+      self.pages = pages
+
+   # Len method handler
+   def __len__(self):
+      return self.pages # Returns the amount of pages!
+
+   # str method handler
+   def __str__(self):
+      return f'{self.name} written by {self.author}: {self.pages} pages.'
+      # Returns the string version of our object!
+
+   # del method handler
+   def __del__(self):
+      print(f'{self.name} has been successfully deleted!')
+
+
+
+"""
+Let's test our brand new object!
+"""
+
+myBook = Book('My Story', 'zerquiolin', 911)
+
+len(myBook) # 911
+print(myBook) # 'My Story written by zerquiolin: 911 pages.'
+del(myBook) # 'My Story has been successfully deleted!'
+```
 
 <br>
 
@@ -2206,15 +2437,273 @@ print( myDog.greetings() ) # "Hello! I'm Rambo:911, and today is sunday! woof wo
 
 <br>
 
-### **Creating Modules**
+### **Pip Install ~ PyPi**
+
+_PyPi_ is a repository for open-source third-party Python packages.
+
+It's similar to RubyGems in the ruby world, PHP's packagist, CPAN for Perl, and NPM for Node.js
+
+So far we have user built-in packages, but there are so other libraries available that people have open-sourced and shared on PyPi.
+
+We can use **pip install** at the command line to install these packages!
+
+By installing python from python.org or through the Anaconda distribution you also installed **pip**!
+
+**pip** is a simple way to download packages at your command line directly from the PyPi repository!
+
+There are packages already created for almost any use case you can think of!
+
+Let's make a quick example downloading and installing external packages!
+
+On the terminal type:
+
+```
+pip install 'Package Name'
+```
+
+Now let's install a package that allows us to work with excel files!
+
+Let's use [openpyxl](https://openpyxl.readthedocs.io/en/stable/)
+
+```
+pip install openpyxl
+```
+
+And now we can easily import the package!
+
+```python
+import openpyxl
+```
 
 <br>
 
-### **Installing Modules**
+### **Own Modules & Packages**
+
+Modules are just .py scripts that you call in another .py script!
+
+Packages are collections of modules.
+
+Let's make some examples:
+
+We will create a .py file called 'myModule' that will contain the functions we will later call in another file.
+
+_*myModule.py*_:
+
+```python
+def myFunc():
+   print("I'm a function inside myModule!")
+```
+
+Now let's import our module and use its functions!
+
+_*myProgram.py*_:
+
+```python
+from myModule import myFunc
+
+myFunc() # I'm a function inside myModule!
+```
+
+We now have successfully created our own module!
+But, later on we might have a lot more functions and files that work together, and that's when we create our packages.
+
+Let's create a package!
+
+To create a package we only need to set a folder and a \_\_init\_\_ file in order for python to recognize that folder as a package, but it's not necessary to contain data in the file, it just works as a reference!
+
+For example:
+
+Let's create a folder called _myPackage_ and inside the folder we will have another folder called _subPackage_, don't forget to add the \_\_init\_\_ file inside the folders to be recognized as packages!
+
+Now, let's create a file inside each of those folders, containing the following data:
+
+_File_ on _myPackage_
+
+```python
+def myFunc():
+   print("I'm inside the myPackage")
+```
+
+_SubFile_ on _subPackage_
+
+```python
+def myFunc():
+   print("I'm inside the subPackage")
+```
+
+Now let's create a separate file importing them:
+
+```python
+from myPackge import File
+from myPackge.subPackage import SubFile
+
+File.myFunc() # "I'm inside the myPackage"
+SubFile.myFunc() # "I'm inside the subPackage"
+```
 
 <br>
 
-### **Exploring The Python Ecosystem**
+### **\_\_name\_\_ and \_\_main\_\_**
+
+After having a deeper understanding over python and its functionalities you might encounter something like this:
+
+```python
+if __name__ == '__main__':
+   pass
+```
+
+Somethimes when you are importing from a module, you would like to know wheter a modules function is being used as an import, or if you are using the original .py file of that module.
+
+Lets's create some examples:
+
+Let's create two files:
+
+_one.py_
+
+```python
+print(' This is one.py file ')
+
+def func():
+   print("Function at one.py!")
+
+"""
+__name__ name is a built-in variable that allows us to determine whether the current file is either imported or not!
+
+Once the file runs if it is the current file and not imported it will be assigned as '__main__' otherwise it won't
+"""
+
+if __name__ == '__main__':
+   # Here we will execute some code as we know the file is being ran and not imported
+
+   print( "I wasn't imported" )
+else: # It's not common to use an else statement in this case, but for getting how it works we are using it!
+   print("I was imported")
+```
+
+_two.py_
+
+```python
+import one
+
+one.func()
+
+print(' This is two.py file ')
+
+if __name__ == '__main__':
+   # Here we will execute some code as we know the file is being ran and not imported
+
+   print( "I wasn't imported" )
+else: # It's not common to use an else statement in this case, but for getting how it works we are using it!
+   print("I was imported")
+```
+
+Now if we run our file we will get:
+
+_one.py_
+
+```python
+' This is one.py file '
+
+"I wasn't imported"
+```
+
+_two.py_
+
+```python
+' This is one.py file '
+
+"I was imported"
+
+"Function at one.py!"
+
+' This is two.py file '
+
+"I wasn't imported"
+```
+
+A common use of this conditional is to run scripts:
+
+```python
+def funct0():
+   pass
+def funct1():
+   pass
+def funct2():
+   pass
+
+if __name__ == "__main__":
+   funct0()
+   funct1()
+   funct2()
+```
+
+<br>
+
+<br><br>
+
+## **Errors And Exception Handling**
+
+<br>
+
+Errors are bound to happen in your code, especially when some else ends up using it in an unexpected way!
+
+We can use error handilng to attempt to plan for possible errors!
+
+For example, a user may try to write to a file that was only opened in mode='r'.<br>
+Currently if there is any type of error in your code, the entire script will stop, and we don't want that!
+
+So we can use Error Handling to let the script continue with other code, if there is an error!
+
+There is three keywords for this:
+
+1. **try**
+   - This is the block of code to be attempted (may lead to an error).
+2. **except**
+   - Block of code will execute in case there is an error in try block.
+3. **finally**
+   - A final block of code to be executed, regardless of an error.
+
+Let's make an example:
+
+```python
+def add(a,b):
+
+   # We are going to handle each error it might occur will adding a + b
+   # For example: we CAN'T add a string with a integer, that will generate an error and we need to handle it
+
+   # Let's use our try block, where is going to 'try' the code inside
+   try:
+      result = a + b
+   # If our result gets an error we could handle it by using except!
+   except:
+      print('The values provided were not correct!')
+   # We can chain different exception based on its type!
+   # We could OSErrors, ArithmeticError, LookupError and so much more!
+   # And we CAN have a different aproach to each error
+   except BufferError:
+      # Some code
+      pass
+   except LookupError:
+      # Some code
+      pass
+   except OSError:
+      # Some code
+      pass
+   # If it didn't occur an error we also can chain an else statement rigth after the except block!
+   else:
+      print(result)
+   # We also have an always run block called 'finally', this block will run no matter an error occurred or not!
+   finally:
+      print( 'I will always run no matter what!' )
+```
+
+<br>
+
+### **PyLint overview**
+
+<br>
+
+### **Running Tests With Unittest Library**
 
 <br>
 
